@@ -1,0 +1,20 @@
+node_modules
+storage
+puppeteer
+# /dist
+
+.env
+.env*.local
+
+*.yaml
+yarn-error.log
+
+yarn.lock
+
+deployment.yaml
+
+model.onnx
+
+model_quantized.onnx
+
+models.zip
