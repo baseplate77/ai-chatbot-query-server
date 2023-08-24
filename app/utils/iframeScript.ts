@@ -5,8 +5,8 @@
     setTimeout(function () {
       const iframe = document.createElement("iframe");
       iframe.setAttribute("id", "webbotify-chatbot-id");
-      // iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
-      iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
+      iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
+      // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
       iframe.style.position = "fixed";
       iframe.style.right = "0";
       iframe.style.zIndex = "1000";
