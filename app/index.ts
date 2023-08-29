@@ -16,7 +16,9 @@ app.use(
   })
 );
 
-app.use(bosyParser.urlencoded({ extended: false }));
+app.use(bosyParser.urlencoded({ extended: true }));
+app.use(bosyParser.json());
+
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");

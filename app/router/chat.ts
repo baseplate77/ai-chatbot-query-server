@@ -12,6 +12,8 @@ chatRouter.post(
   "/invalidate-chatbot-details",
   async (req: Request, res: Response) => {
     const { chatbotId } = req.body;
+    console.log("body :", req.body);
+
     try {
       if (chatbotId === undefined) throw "chatbotId is not define";
 
@@ -36,10 +38,14 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
     data = getDataFromFile(id, currTime);
 
     if (data === undefined) {
+      console.log("Uncached");
+
       const docRef = doc(db, `/chatbots/${id}`);
       data = (await getDoc(docRef)).data();
+      // console.log("fetch details :", data);
+
       let d = { data, expriesAt: currTime + 2 * 60 * 60 * 1000 };
-      console.log("cache datails :", d);
+      // console.log("cache datails :", d);
 
       fs.writeFile(
         path.join("chatbots", `${id}.json`),

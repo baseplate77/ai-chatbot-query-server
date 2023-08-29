@@ -8,7 +8,11 @@ export const getDataFromFile = (chatbotId: string, currTime: number) => {
     let cacheData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     // console.log("cach Data :", cacheData);
 
-    if (cacheData.expriesAt >= currTime) return cacheData["data"];
+    if (cacheData.expriesAt >= currTime) {
+      console.log("cached details");
+
+      return cacheData["data"];
+    }
   } catch (error) {
     console.log("error in getting File");
   }

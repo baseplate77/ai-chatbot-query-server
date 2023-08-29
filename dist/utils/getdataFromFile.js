@@ -11,8 +11,10 @@ const getDataFromFile = (chatbotId, currTime) => {
     try {
         let cacheData = JSON.parse(fs_1.default.readFileSync(filePath, "utf-8"));
         // console.log("cach Data :", cacheData);
-        if (cacheData.expriesAt >= currTime)
+        if (cacheData.expriesAt >= currTime) {
+            console.log("cached details");
             return cacheData["data"];
+        }
     }
     catch (error) {
         console.log("error in getting File");

@@ -22,6 +22,7 @@ const getdataFromFile_1 = require("../utils/getdataFromFile");
 const chatRouter = express_1.default.Router();
 chatRouter.post("/invalidate-chatbot-details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { chatbotId } = req.body;
+    console.log("body :", req.body);
     try {
         if (chatbotId === undefined)
             throw "chatbotId is not define";
@@ -43,10 +44,12 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         data = (0, getdataFromFile_1.getDataFromFile)(id, currTime);
         if (data === undefined) {
+            console.log("Uncached");
             const docRef = (0, firestore_1.doc)(firebase_1.db, `/chatbots/${id}`);
             data = (yield (0, firestore_1.getDoc)(docRef)).data();
+            // console.log("fetch details :", data);
             let d = { data, expriesAt: currTime + 2 * 60 * 60 * 1000 };
-            console.log("cache datails :", d);
+            // console.log("cache datails :", d);
             fs_1.default.writeFile(path_1.default.join("chatbots", `${id}.json`), JSON.stringify(d), "utf-8", (err) => {
                 console.log("error in creating a file", err);
             });

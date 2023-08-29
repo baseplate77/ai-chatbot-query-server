@@ -23,7 +23,8 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: "*",
 }));
-app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.use(body_parser_1.default.json());
 app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
