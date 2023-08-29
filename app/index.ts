@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import chatRouter from "./router/chat";
 import dotenv from "dotenv";
 import cors from "cors";
+import bosyParser from "body-parser";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(
   })
 );
 
+app.use(bosyParser.urlencoded({ extended: false }));
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");

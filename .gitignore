@@ -3,6 +3,7 @@ storage
 puppeteer
 # /dist
 
+chatbots/*json
 .env
 .env*.local
 

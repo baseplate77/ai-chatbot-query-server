@@ -17,18 +17,43 @@ const path_1 = __importDefault(require("path"));
 const template_file_1 = require("template-file");
 const firebase_1 = require("../services/firebase");
 const firestore_1 = require("firebase/firestore");
+const fs_1 = __importDefault(require("fs"));
+const getdataFromFile_1 = require("../utils/getdataFromFile");
 const chatRouter = express_1.default.Router();
+chatRouter.post("/invalidate-chatbot-details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { chatbotId } = req.body;
+    try {
+        if (chatbotId === undefined)
+            throw "chatbotId is not define";
+        let filePath = path_1.default.join("chatbots", `${chatbotId}.json`);
+        fs_1.default.unlinkSync(filePath);
+        res.send("invalidate");
+    }
+    catch (error) {
+        console.log("unable to remove cache details");
+        res.status(500).send(error);
+    }
+}));
 chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     if (id === undefined || id === "")
         res.status(500).send("not a vaild url");
-    const docRef = (0, firestore_1.doc)(firebase_1.db, `/chatbots/${id}`);
+    let currTime = Date.now();
     let data;
     try {
-        data = (yield (0, firestore_1.getDoc)(docRef)).data();
+        data = (0, getdataFromFile_1.getDataFromFile)(id, currTime);
+        if (data === undefined) {
+            const docRef = (0, firestore_1.doc)(firebase_1.db, `/chatbots/${id}`);
+            data = (yield (0, firestore_1.getDoc)(docRef)).data();
+            let d = { data, expriesAt: currTime + 2 * 60 * 60 * 1000 };
+            console.log("cache datails :", d);
+            fs_1.default.writeFile(path_1.default.join("chatbots", `${id}.json`), JSON.stringify(d), "utf-8", (err) => {
+                console.log("error in creating a file", err);
+            });
+        }
         if (data === undefined)
             throw "invalid chat id was passed";
-        console.log("data :", data);
+        // console.log("data :", data);
     }
     catch (error) {
         console.log("error in chat due to :", error);

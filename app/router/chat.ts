@@ -1,23 +1,58 @@
 import express, { Request, Response } from "express";
 import path from "path";
-import fs from "fs";
 import { renderFile } from "template-file";
 import { db } from "../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import fs from "fs";
+import { getDataFromFile } from "../utils/getdataFromFile";
 
 const chatRouter = express.Router();
+
+chatRouter.post(
+  "/invalidate-chatbot-details",
+  async (req: Request, res: Response) => {
+    const { chatbotId } = req.body;
+    try {
+      if (chatbotId === undefined) throw "chatbotId is not define";
+
+      let filePath = path.join("chatbots", `${chatbotId}.json`);
+      fs.unlinkSync(filePath);
+      res.send("invalidate");
+    } catch (error) {
+      console.log("unable to remove cache details");
+      res.status(500).send(error);
+    }
+  }
+);
 
 chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   const id = req.params.id as any;
 
   if (id === undefined || id === "") res.status(500).send("not a vaild url");
 
-  const docRef = doc(db, `/chatbots/${id}`);
+  let currTime = Date.now();
   let data: any;
   try {
-    data = (await getDoc(docRef)).data();
+    data = getDataFromFile(id, currTime);
+
+    if (data === undefined) {
+      const docRef = doc(db, `/chatbots/${id}`);
+      data = (await getDoc(docRef)).data();
+      let d = { data, expriesAt: currTime + 2 * 60 * 60 * 1000 };
+      console.log("cache datails :", d);
+
+      fs.writeFile(
+        path.join("chatbots", `${id}.json`),
+        JSON.stringify(d),
+        "utf-8",
+        (err) => {
+          console.log("error in creating a file", err);
+        }
+      );
+    }
+
     if (data === undefined) throw "invalid chat id was passed";
-    console.log("data :", data);
+    // console.log("data :", data);
   } catch (error) {
     console.log("error in chat due to :", error);
     res.status(500).send(`error in chat due to : ${error}`);
