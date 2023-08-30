@@ -32,7 +32,7 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   let currTime = Date.now();
   let data: any;
   try {
-    // data = getDataFromFile(id, currTime);
+    data = getDataFromFile(id, currTime);
 
     if (data === undefined) {
       console.log("Uncached");

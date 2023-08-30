@@ -18,6 +18,7 @@ const template_file_1 = require("template-file");
 const firebase_1 = require("../services/firebase");
 const firestore_1 = require("firebase/firestore");
 const fs_1 = __importDefault(require("fs"));
+const getdataFromFile_1 = require("../utils/getdataFromFile");
 const chatRouter = express_1.default.Router();
 chatRouter.get("/invalidate-chatbot-details", (req, res) => {
     const { chatbotId } = req.query;
@@ -41,7 +42,7 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
     let currTime = Date.now();
     let data;
     try {
-        // data = getDataFromFile(id, currTime);
+        data = (0, getdataFromFile_1.getDataFromFile)(id, currTime);
         if (data === undefined) {
             console.log("Uncached");
             const docRef = (0, firestore_1.doc)(firebase_1.db, `/chatbots/${id}`);
