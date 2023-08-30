@@ -20,7 +20,7 @@ const firestore_1 = require("firebase/firestore");
 const fs_1 = __importDefault(require("fs"));
 const getdataFromFile_1 = require("../utils/getdataFromFile");
 const chatRouter = express_1.default.Router();
-chatRouter.post("/invalidate-chatbot-details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+chatRouter.delete("/invalidate-chatbot-details", (req, res) => {
     const { chatbotId } = req.body;
     console.log("body :", req.body);
     try {
@@ -34,7 +34,7 @@ chatRouter.post("/invalidate-chatbot-details", (req, res) => __awaiter(void 0, v
         console.log("unable to remove cache details");
         res.status(500).send(error);
     }
-}));
+});
 chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     if (id === undefined || id === "")
@@ -51,7 +51,8 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
             let d = { data, expriesAt: currTime + 2 * 60 * 60 * 1000 };
             // console.log("cache datails :", d);
             fs_1.default.writeFile(path_1.default.join("chatbots", `${id}.json`), JSON.stringify(d), "utf-8", (err) => {
-                console.log("error in creating a file", err);
+                if (!err)
+                    console.log("error in creating a file", err);
             });
         }
         if (data === undefined)

@@ -8,9 +8,9 @@ import { getDataFromFile } from "../utils/getdataFromFile";
 
 const chatRouter = express.Router();
 
-chatRouter.post(
+chatRouter.delete(
   "/invalidate-chatbot-details",
-  async (req: Request, res: Response) => {
+  (req: Request, res: Response) => {
     const { chatbotId } = req.body;
     console.log("body :", req.body);
 
@@ -52,7 +52,7 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
         JSON.stringify(d),
         "utf-8",
         (err) => {
-          console.log("error in creating a file", err);
+          if (!err) console.log("error in creating a file", err);
         }
       );
     }

@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
     // res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.use(chat_1.default);
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send("Express + TypeScript Server");
