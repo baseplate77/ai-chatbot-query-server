@@ -19,9 +19,9 @@ const firebase_1 = require("../services/firebase");
 const firestore_1 = require("firebase/firestore");
 const fs_1 = __importDefault(require("fs"));
 const chatRouter = express_1.default.Router();
-chatRouter.delete("/invalidate-chatbot-details", (req, res) => {
-    const { chatbotId } = req.body;
-    console.log("body :", req.body);
+chatRouter.get("/invalidate-chatbot-details", (req, res) => {
+    const { chatbotId } = req.query;
+    console.log("body :", req.query);
     try {
         if (chatbotId === undefined)
             throw "chatbotId is not define";

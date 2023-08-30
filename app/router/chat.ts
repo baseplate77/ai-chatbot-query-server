@@ -8,24 +8,21 @@ import { getDataFromFile } from "../utils/getdataFromFile";
 
 const chatRouter = express.Router();
 
-chatRouter.delete(
-  "/invalidate-chatbot-details",
-  (req: Request, res: Response) => {
-    const { chatbotId } = req.body;
-    console.log("body :", req.body);
+chatRouter.get("/invalidate-chatbot-details", (req: Request, res: Response) => {
+  const { chatbotId } = req.query;
+  console.log("body :", req.query);
 
-    try {
-      if (chatbotId === undefined) throw "chatbotId is not define";
+  try {
+    if (chatbotId === undefined) throw "chatbotId is not define";
 
-      let filePath = path.join("chatbots", `${chatbotId}.json`);
-      fs.unlinkSync(filePath);
-      res.send("invalidate");
-    } catch (error) {
-      console.log("unable to remove cache details");
-      res.status(500).send(error);
-    }
+    let filePath = path.join("chatbots", `${chatbotId}.json`);
+    fs.unlinkSync(filePath);
+    res.send("invalidate");
+  } catch (error) {
+    console.log("unable to remove cache details");
+    res.status(500).send(error);
   }
-);
+});
 
 chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   const id = req.params.id as any;
