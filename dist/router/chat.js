@@ -70,6 +70,9 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
         botIcon: data.botConfig.botIcon,
         primaryColor: data.botConfig.primaryColor,
         showToolTip: data.botConfig.showToolTip,
+        botPosition: data.botConfig.botPosition !== undefined
+            ? data.botConfig.botPosition
+            : "right",
         brightness: data.botConfig.primaryColor.includes("ffffff")
             ? "brightness(0)"
             : "brightness(1)",

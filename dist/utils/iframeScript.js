@@ -2,18 +2,22 @@
 (function () {
     function init() {
         let s = "{{showToolTip}}";
+        let botPosition = `{{ botPosition }}`;
         setTimeout(function () {
             const iframe = document.createElement("iframe");
             iframe.setAttribute("id", "webbotify-chatbot-id");
             iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
             // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
             iframe.style.position = "fixed";
-            iframe.style.right = "0";
+            // iframe.style.right = "0";
             iframe.style.zIndex = "1000";
             iframe.style.border = "none";
             iframe.style.width = "100%";
             iframe.style.bottom = window.innerWidth < 640 ? "0" : "80px";
-            iframe.style.right = window.innerWidth < 640 ? "0" : "16px";
+            if (botPosition === "right")
+                iframe.style.right = window.innerWidth < 640 ? "0" : "16px";
+            else
+                iframe.style.left = window.innerWidth < 640 ? "0" : "16px";
             iframe.style.width = window.innerWidth < 640 ? "100%" : "468px";
             iframe.style.height = window.innerWidth < 640 ? "100%" : "85vh";
             iframe.style.borderRadius = window.innerWidth < 640 ? "0" : "0.75rem";
@@ -36,7 +40,10 @@
             toggleButton.style.justifyContent = "center";
             toggleButton.style.alignItems = "center";
             toggleButton.style.bottom = "16px";
-            toggleButton.style.right = "16px";
+            if (botPosition === "right")
+                toggleButton.style.right = "16px";
+            else
+                toggleButton.style.left = "16px";
             toggleButton.style.width = "60px";
             toggleButton.style.height = "60px";
             toggleButton.style.zIndex = "9999998";
@@ -145,11 +152,12 @@
   }
   .webbotiy-tooltip-wrapper .neg-bottom {
     bottom: -6px;
+    ${botPosition === "right" ? "right: 18px;" : "left: 18px;"}
   }       
   .webbotiy-tooltip-wrapper {
     position: fixed;
     bottom: 90px;
-    right: 20px;
+    ${botPosition === "right" ? "right: 20px;" : "left: 20px;"}
     display: block;
     z-index: 9999998;
   }
