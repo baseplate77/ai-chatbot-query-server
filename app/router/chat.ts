@@ -69,7 +69,9 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   allowedDomains.push("http://localhost:3000/");
   allowedDomains.push("https://www.webbotify.com/");
 
-  if (!allowedDomains.includes(originUrl!)) {
+  let index = allowedDomains.findIndex((url) => url.includes(originUrl!));
+
+  if (index < 0) {
     throw `ChatBot cannot be integrate on${originUrl}`;
   }
   let filePath = path.join(__dirname, "..", "utils", "iframeScript.js");
