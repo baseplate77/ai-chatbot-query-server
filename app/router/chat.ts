@@ -27,7 +27,7 @@ chatRouter.get("/invalidate-chatbot-details", (req: Request, res: Response) => {
 chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   const id = req.params.id as any;
 
-  let originUrl = req.headers.referer;
+  let originUrl = new URL(req.headers.referer!).host;
   console.log("origin Url :", originUrl);
 
   if (id === undefined || id === "") res.status(500).send("not a vaild url");
@@ -69,7 +69,7 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   allowedDomains.push("http://localhost:3000/");
   allowedDomains.push("https://www.webbotify.com/");
 
-  let index = allowedDomains.findIndex((url) => url.includes(originUrl!));
+  let index = allowedDomains.findIndex((url) => url.includes(originUrl));
 
   if (index < 0) {
     throw `ChatBot cannot be integrate on${originUrl}`;

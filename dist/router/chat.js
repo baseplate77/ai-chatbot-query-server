@@ -38,7 +38,7 @@ chatRouter.get("/invalidate-chatbot-details", (req, res) => {
 chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    let originUrl = req.headers.referer;
+    let originUrl = new URL(req.headers.referer).host;
     console.log("origin Url :", originUrl);
     if (id === undefined || id === "")
         res.status(500).send("not a vaild url");
