@@ -27,6 +27,9 @@ chatRouter.get("/invalidate-chatbot-details", (req: Request, res: Response) => {
 chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
   const id = req.params.id as any;
 
+  let originUrl = req.headers.referer;
+  console.log("origin Url :", originUrl);
+
   if (id === undefined || id === "") res.status(500).send("not a vaild url");
 
   let currTime = Date.now();
@@ -61,6 +64,14 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
     res.status(500).send(`error in chat due to : ${error}`);
   }
 
+  let allowedDomains: string[] = data.allowedDomains ?? [];
+
+  allowedDomains.push("http://localhost:3000/");
+  allowedDomains.push("https://www.webbotify.com/");
+
+  if (!allowedDomains.includes(originUrl!)) {
+    throw `ChatBot cannot be integrate on${originUrl}`;
+  }
   let filePath = path.join(__dirname, "..", "utils", "iframeScript.js");
 
   const dataTemplate = {
