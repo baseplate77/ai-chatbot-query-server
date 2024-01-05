@@ -38,7 +38,8 @@ chatRouter.get("/invalidate-chatbot-details", (req, res) => {
 chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    let originUrl = new URL(req.headers.referer).host;
+    // let originUrl = new URL(req.headers.referer!).host;
+    let originUrl = req.headers.host;
     console.log("origin Url :", originUrl);
     if (id === undefined || id === "")
         res.status(500).send("not a vaild url");
@@ -61,34 +62,36 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
         if (data === undefined)
             throw "invalid chat id was passed";
         // console.log("data :", data);
+        let allowedDomains = (_a = data.allowedDomains) !== null && _a !== void 0 ? _a : [];
+        if (allowedDomains.length > 0) {
+            allowedDomains.push("http://localhost:3000/");
+            allowedDomains.push("https://www.webbotify.com/");
+            let index = allowedDomains.findIndex((url) => url.includes(originUrl));
+            if (index < 0) {
+                throw `ChatBot cannot be integrate on ${originUrl}`;
+            }
+        }
+        let filePath = path_1.default.join(__dirname, "..", "utils", "iframeScript.js");
+        const dataTemplate = {
+            chatbotId: id,
+            welcomeMsg: data.botConfig.welcomeMsg,
+            botIcon: data.botConfig.botIcon,
+            primaryColor: data.botConfig.primaryColor,
+            showToolTip: data.botConfig.showToolTip,
+            botPosition: data.botConfig.botPosition !== undefined
+                ? data.botConfig.botPosition
+                : "right",
+            brightness: data.botConfig.primaryColor.includes("ffffff")
+                ? "brightness(0)"
+                : "brightness(1)",
+        };
+        let s = yield (0, template_file_1.renderFile)(filePath, dataTemplate);
+        res.set("Content-Type", "application/javascript"); // Set the response content type as JavaScript
+        res.send(s);
     }
     catch (error) {
         console.log("error in chat due to :", error);
         res.status(500).send(`error in chat due to : ${error}`);
     }
-    let allowedDomains = (_a = data.allowedDomains) !== null && _a !== void 0 ? _a : [];
-    allowedDomains.push("http://localhost:3000/");
-    allowedDomains.push("https://www.webbotify.com/");
-    let index = allowedDomains.findIndex((url) => url.includes(originUrl));
-    if (index < 0) {
-        throw `ChatBot cannot be integrate on${originUrl}`;
-    }
-    let filePath = path_1.default.join(__dirname, "..", "utils", "iframeScript.js");
-    const dataTemplate = {
-        chatbotId: id,
-        welcomeMsg: data.botConfig.welcomeMsg,
-        botIcon: data.botConfig.botIcon,
-        primaryColor: data.botConfig.primaryColor,
-        showToolTip: data.botConfig.showToolTip,
-        botPosition: data.botConfig.botPosition !== undefined
-            ? data.botConfig.botPosition
-            : "right",
-        brightness: data.botConfig.primaryColor.includes("ffffff")
-            ? "brightness(0)"
-            : "brightness(1)",
-    };
-    let s = yield (0, template_file_1.renderFile)(filePath, dataTemplate);
-    res.set("Content-Type", "application/javascript"); // Set the response content type as JavaScript
-    res.send(s);
 }));
 exports.default = chatRouter;
