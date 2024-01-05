@@ -36,7 +36,6 @@ chatRouter.get("/invalidate-chatbot-details", (req, res) => {
     }
 });
 chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const id = req.params.id;
     // let originUrl = new URL(req.headers.referer!).host;
     let originUrl = req.headers.host;
@@ -62,15 +61,15 @@ chatRouter.get("/chat/:id.js", (req, res) => __awaiter(void 0, void 0, void 0, f
         if (data === undefined)
             throw "invalid chat id was passed";
         // console.log("data :", data);
-        let allowedDomains = (_a = data.allowedDomains) !== null && _a !== void 0 ? _a : [];
-        if (allowedDomains.length > 0) {
-            allowedDomains.push("http://localhost:3000/");
-            allowedDomains.push("https://www.webbotify.com/");
-            let index = allowedDomains.findIndex((url) => url.includes(originUrl));
-            if (index < 0) {
-                throw `ChatBot cannot be integrate on ${originUrl}`;
-            }
-        }
+        // let allowedDomains: string[] = data.allowedDomains ?? [];
+        // if (allowedDomains.length > 0) {
+        //   allowedDomains.push("http://localhost:3000/");
+        //   allowedDomains.push("https://www.webbotify.com/");
+        //   let index = allowedDomains.findIndex((url) => url.includes(originUrl!));
+        //   if (index < 0) {
+        //     throw `ChatBot cannot be integrate on ${originUrl}`;
+        //   }
+        // }
         let filePath = path_1.default.join(__dirname, "..", "utils", "iframeScript.js");
         const dataTemplate = {
             chatbotId: id,

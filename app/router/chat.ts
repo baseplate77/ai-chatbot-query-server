@@ -62,18 +62,19 @@ chatRouter.get("/chat/:id.js", async (req: Request, res: Response) => {
     if (data === undefined) throw "invalid chat id was passed";
     // console.log("data :", data);
 
-    let allowedDomains: string[] = data.allowedDomains ?? [];
+    // let allowedDomains: string[] = data.allowedDomains ?? [];
 
-    if (allowedDomains.length > 0) {
-      allowedDomains.push("http://localhost:3000/");
-      allowedDomains.push("https://www.webbotify.com/");
+    // if (allowedDomains.length > 0) {
+    //   allowedDomains.push("http://localhost:3000/");
+    //   allowedDomains.push("https://www.webbotify.com/");
 
-      let index = allowedDomains.findIndex((url) => url.includes(originUrl!));
+    //   let index = allowedDomains.findIndex((url) => url.includes(originUrl!));
 
-      if (index < 0) {
-        throw `ChatBot cannot be integrate on ${originUrl}`;
-      }
-    }
+    //   if (index < 0) {
+    //     throw `ChatBot cannot be integrate on ${originUrl}`;
+    //   }
+    // }
+
     let filePath = path.join(__dirname, "..", "utils", "iframeScript.js");
 
     const dataTemplate = {
