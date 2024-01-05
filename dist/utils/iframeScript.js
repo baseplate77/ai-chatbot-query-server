@@ -3,8 +3,36 @@
     function init() {
         let s = "{{showToolTip}}";
         let botPosition = `{{ botPosition }}`;
+        let pageTitle = document.title;
+        let humanDiv = document.createElement("div");
+        const toogleBtnParent = document.createElement("div");
+        let isHumanMessageOpen = false;
+        const toggleButton = document.createElement("button");
+        const iframe = document.createElement("iframe");
+        // parent div that contain toogle button and border for human
+        toogleBtnParent.appendChild(toggleButton);
+        toogleBtnParent.style.borderRadius = "9999px";
+        toogleBtnParent.style.position = "fixed";
+        toogleBtnParent.style.display = "flex";
+        toogleBtnParent.style.justifyContent = "center";
+        toogleBtnParent.style.alignItems = "center";
+        toogleBtnParent.style.bottom = "16px";
+        if (botPosition === "right")
+            toogleBtnParent.style.right = "16px";
+        else
+            toogleBtnParent.style.left = "16px";
+        toogleBtnParent.style.width = "60px";
+        toogleBtnParent.style.height = "60px";
+        toogleBtnParent.style.zIndex = "9999998";
+        toggleButton.style.cursor = "pointer";
+        const toogleButtonBorder = document.createElement("span");
+        toogleButtonBorder.style.cssText =
+            "position:absolute !important; border:3px solid #ee334b !important; border-radius:100% !important; top:-4px !important; bottom: -4px !important; right: -4px !important; left: -4px !important; ";
+        const humanMessageCounter = document.createElement("span");
+        humanMessageCounter.innerText = "1";
+        humanMessageCounter.style.cssText =
+            "position:absolute !important;color:white; background-color: #ee334b; border-radius:100% !important; font-size: 12px; height:22px !important; width:22px !important; bottom: -6px !important; right:-4px !important; text-align:center !important; letter-spacing:0 !important; line-height:21px !important; border: 1px solid white;";
         setTimeout(function () {
-            const iframe = document.createElement("iframe");
             iframe.setAttribute("id", "webbotify-chatbot-id");
             iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
             // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
@@ -26,32 +54,52 @@
             iframe.style.zIndex = "9999999";
             iframe.style.display = "none";
             document.body.appendChild(iframe);
-            const toggleButton = document.createElement("button");
             toggleButton.setAttribute("id", "webbotify-chat-icon");
             toggleButton.style.overflow = "hidden";
             toggleButton.innerHTML =
                 '<img src={{ botIcon }} style="width: 30px; height: 30px;" />';
             toggleButton.style.padding = "0";
             toggleButton.style.backgroundColor = "{{ primaryColor }}";
-            toggleButton.style.color = "white";
             toggleButton.style.borderRadius = "9999px";
-            toggleButton.style.position = "fixed";
             toggleButton.style.display = "flex";
             toggleButton.style.justifyContent = "center";
             toggleButton.style.alignItems = "center";
-            toggleButton.style.bottom = "16px";
-            if (botPosition === "right")
-                toggleButton.style.right = "16px";
-            else
-                toggleButton.style.left = "16px";
-            toggleButton.style.width = "60px";
-            toggleButton.style.height = "60px";
+            toggleButton.style.width = "100%";
+            toggleButton.style.height = "100%";
             toggleButton.style.zIndex = "9999998";
-            toggleButton.style.border = "none";
-            toggleButton.style.cursor = "pointer";
             toggleButton.style.boxShadow =
                 "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
-            toggleButton.onclick = () => {
+            toggleButton.onclick = handleIframeOpenClose;
+            const tooltip = document.createElement("div");
+            if (s === "" || s === "true") {
+                tooltip.innerHTML = tooltipInnerHtml("{{ welcomeMsg }}");
+            }
+            if (window.innerWidth >= 640 || true) {
+                document.body.appendChild(toogleBtnParent);
+                document.body.appendChild(tooltip);
+                // add tooltips message onclick event
+                let tooltipMessage = document.getElementById("webbotify-weclome-msg");
+                if (tooltipMessage) {
+                    tooltipMessage.onclick = handleIframeOpenClose;
+                }
+            }
+            const closeBtn = document.getElementById("tooltip-close-btn");
+            if (closeBtn) {
+                closeBtn.onclick = () => {
+                    console.log("hii there from close btn");
+                    tooltip.style.display = "none";
+                };
+            }
+            // Logic part
+            // Update iframe height on window resize
+            window.addEventListener("resize", () => {
+                iframe.style.bottom = window.innerWidth < 640 ? "0" : "5rem";
+                iframe.style.right = window.innerWidth < 640 ? "0" : "1rem";
+                iframe.style.width = window.innerWidth < 640 ? "100%" : "448px";
+                iframe.style.height = window.innerWidth < 640 ? "100%" : "85vh";
+                iframe.style.borderRadius = window.innerWidth < 640 ? "0" : "0.75rem";
+            });
+            function handleIframeOpenClose() {
                 if (iframe.style.display === "none") {
                     iframe.contentWindow.postMessage({ openChat: true }, "*");
                     iframe.style.display = "block";
@@ -60,23 +108,90 @@
                         '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
                     toggleButton.style.width = "60px";
                     toggleButton.style.height = "60px";
+                    if (isHumanMessageOpen) {
+                        removeHumanMessage();
+                    }
                 }
                 else {
                     iframe.contentWindow.postMessage({ closeChat: true }, "*");
                     iframe.style.display = "none";
-                    tooltip.style.display = "block";
+                    tooltip.style.display = isHumanMessageOpen ? "none" : "block";
                     toggleButton.innerHTML = `<img src="{{botIcon}}" style="width: 30px; height: 30px;  " />`;
                     toggleButton.style.width = "60px";
                     toggleButton.style.height = "60px";
                 }
-            };
-            const tooltip = document.createElement("div");
-            if (s === "" || s === "true") {
-                tooltip.innerHTML = `  
-  <div id="webbotify-chat-tooltip" class="webbotiy-tooltip-wrapper">
+            }
+            function removeHumanMessage() {
+                isHumanMessageOpen = false;
+                document.body.removeChild(humanDiv);
+                toogleButtonBorder.remove();
+                humanMessageCounter.remove();
+                document.title = pageTitle;
+            }
+            function handleMessage(event) {
+                // trigger when human message is received
+                if (event.data.isHumanHandOff !== undefined) {
+                    if (event.data.message && iframe.style.display === "none") {
+                        // hide the tool tips
+                        tooltip.style.display = "none";
+                        isHumanMessageOpen = true;
+                        humanDiv.innerHTML = tooltipInnerHtml(`<div> <div>Message From<b> Human Agent:</b></div> <div style="margin-top:8px;"> ${event.data.message}</div><div>`, "human-message", "human-msg-close-btn", "humam-msg-id");
+                        document.title = "💬 1 - " + pageTitle;
+                        document.body.appendChild(humanDiv);
+                        toggleButton.appendChild(toogleButtonBorder);
+                        toggleButton.appendChild(humanMessageCounter);
+                        // add human message onclick event
+                        let humanMessageDiv = document.getElementById("humam-msg-id");
+                        if (humanMessageDiv) {
+                            humanMessageDiv.onclick = handleIframeOpenClose;
+                        }
+                        // handle close button
+                        let humanMsgCloseBtn = document.getElementById("human-msg-close-btn");
+                        if (humanMsgCloseBtn) {
+                            humanMsgCloseBtn.onclick = () => {
+                                console.log("btn close");
+                                removeHumanMessage();
+                            };
+                        }
+                    }
+                    else {
+                        isHumanMessageOpen = false;
+                        removeHumanMessage();
+                    }
+                }
+                if (event.origin !== "https://www.webbotify.com") {
+                    return;
+                }
+                if (!event.data.closeBot)
+                    return;
+                let IframeIsOpen = iframe.style.display === "none";
+                if (IframeIsOpen) {
+                    iframe.style.display = "block";
+                    tooltip.style.display = "none";
+                    toggleButton.innerHTML =
+                        '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
+                    toggleButton.style.width = "60px";
+                    toggleButton.style.height = "60px";
+                }
+                else {
+                    iframe.style.display = "none";
+                    tooltip.style.display = "block";
+                    toggleButton.innerHTML =
+                        '<img src="{{botIcon}}" style="width: 30px; height: 30px;" />';
+                    toggleButton.style.width = "60px";
+                    toggleButton.style.height = "60px";
+                }
+            }
+            window.addEventListener("message", handleMessage, false);
+        }, 2000);
+        const tooltipInnerHtml = (value, id = "webbotify-chat-tooltip", closeBtnId = "tooltip-close-btn", contentId = "webbotify-weclome-msg") => {
+            return `
+  <div id=${id} class="webbotiy-tooltip-wrapper">
   <style>
   .webbotiy-tooltip-wrapper .relative {
     position: relative;
+    cursor: pointer;
+
   }
   .webbotiy-tooltip-wrapper .max-w-sm {
     max-width: 384px;
@@ -161,7 +276,7 @@
     display: block;
     z-index: 9999998;
   }
-  .webbotiy-tooltip-wrapper #tooltip-close-btn {
+  .webbotiy-tooltip-wrapper #${closeBtnId} {z
     cursor: pointer;
     position: absolute;
     width: 16px;
@@ -174,14 +289,14 @@
     color:black;
   }
   </style>
-  <div class="relative max-w-sm bg-brand shadow-xl ring-gray-100 ring-1 rounded-xl">
-  <div id="tooltip-close-btn">               
+  <div id="webbotify-message" class="relative max-w-sm bg-brand shadow-xl ring-gray-100 ring-1 rounded-xl">
+  <div id=${closeBtnId}>               
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="#000" viewBox="0 0 256 256">
       <path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z">
       </path>
     </svg>
   </div>
-  <div class="p-4">
+  <div id=${contentId} class="p-4">
     <p class="text-base text-black font-medium  line-clamp-3 whitespace-pre-wrap" style="
     color: black;
   font-size: 1rem/;
@@ -191,63 +306,21 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   margin: 0;
-  " >{{ welcomeMsg }}</p>
+  " >${value}</p>
   </div>
   
   <div class="absolute w-4 h-4 rotate-45 bg-brand neg-bottom" style="right: 16px;"></div>
   </div>
   </div>
   `;
-            }
-            if (window.innerWidth >= 640 || true) {
-                document.body.appendChild(toggleButton);
-                document.body.appendChild(tooltip);
-            }
-            const closeBtn = document.getElementById("tooltip-close-btn");
-            if (closeBtn) {
-                closeBtn.onclick = () => {
-                    tooltip.style.display = "none";
-                };
-            }
-            // Update iframe height on window resize
-            window.addEventListener("resize", () => {
-                iframe.style.bottom = window.innerWidth < 640 ? "0" : "5rem";
-                iframe.style.right = window.innerWidth < 640 ? "0" : "1rem";
-                iframe.style.width = window.innerWidth < 640 ? "100%" : "448px";
-                iframe.style.height = window.innerWidth < 640 ? "100%" : "85vh";
-                iframe.style.borderRadius = window.innerWidth < 640 ? "0" : "0.75rem";
-            });
-            function handleMessage(event) {
-                if (event.origin !== "https://www.webbotify.com") {
-                    return;
-                }
-                if (!event.data.closeBot)
-                    return;
-                let IframeIsOpen = iframe.style.display === "none";
-                if (IframeIsOpen) {
-                    iframe.style.display = "block";
-                    tooltip.style.display = "none";
-                    toggleButton.innerHTML =
-                        '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
-                }
-                else {
-                    iframe.style.display = "none";
-                    tooltip.style.display = "block";
-                    toggleButton.innerHTML =
-                        '<img src="{{botIcon}}" style="width: 30px; height: 30px;" />';
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
-                }
-            }
-            window.addEventListener("message", handleMessage, false);
-        }, 2000);
+        };
     }
     if (document.readyState === "complete") {
+        console.log("document");
         init();
     }
     else {
+        console.log("load");
         window.addEventListener("load", init);
     }
 })();
