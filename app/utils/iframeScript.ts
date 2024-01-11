@@ -153,7 +153,7 @@
             tooltip.style.display = "none";
             isHumanMessageOpen = true;
             humanDiv.innerHTML = tooltipInnerHtml(
-              `<div> <div>Message From<b> Human Agent:</b></div> <div style="margin-top:8px;"> ${event.data.message}</div><div>`,
+              `<div> <div style="font-size: smaller;">Message From<b> Human Agent:</b></div> <div style="margin-top:8px;"> ${event.data.message}</div><div>`,
               "human-message",
               "human-msg-close-btn",
               "humam-msg-id"
