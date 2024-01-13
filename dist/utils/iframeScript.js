@@ -21,8 +21,8 @@
             toogleBtnParent.style.right = "16px";
         else
             toogleBtnParent.style.left = "16px";
-        toogleBtnParent.style.width = "60px";
-        toogleBtnParent.style.height = "60px";
+        toogleBtnParent.style.width = "60px !important";
+        toogleBtnParent.style.height = "60px !import";
         toogleBtnParent.style.zIndex = "9999998";
         toggleButton.style.cursor = "pointer";
         toggleButton.style.border = "none";
@@ -49,6 +49,7 @@
                 iframe.style.left = window.innerWidth < 640 ? "0" : "16px";
             iframe.style.width = window.innerWidth < 640 ? "100%" : "468px";
             iframe.style.height = window.innerWidth < 640 ? "100%" : "85vh";
+            iframe.style.maxHeight = "824px";
             iframe.style.borderRadius = window.innerWidth < 640 ? "0" : "0.75rem";
             iframe.style.boxShadow =
                 "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
@@ -61,7 +62,7 @@
                 '<img src={{ botIcon }} style="width: 30px; height: 30px;" />';
             toggleButton.style.padding = "0";
             toggleButton.style.backgroundColor = "{{ primaryColor }}";
-            toggleButton.style.borderRadius = "9999px";
+            toggleButton.style.borderRadius = "100%";
             toggleButton.style.display = "flex";
             toggleButton.style.justifyContent = "center";
             toggleButton.style.alignItems = "center";
@@ -107,8 +108,8 @@
                     tooltip.style.display = "none";
                     toggleButton.innerHTML =
                         '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
+                    toggleButton.style.width = "60px !important";
+                    toggleButton.style.height = "60px !important";
                     if (isHumanMessageOpen) {
                         removeHumanMessage();
                     }
@@ -118,8 +119,8 @@
                     iframe.style.display = "none";
                     tooltip.style.display = isHumanMessageOpen ? "none" : "block";
                     toggleButton.innerHTML = `<img src="{{botIcon}}" style="width: 30px; height: 30px;  " />`;
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
+                    toggleButton.style.width = "60px !important";
+                    toggleButton.style.height = "60px !important";
                 }
             }
             function removeHumanMessage() {
@@ -171,16 +172,16 @@
                     tooltip.style.display = "none";
                     toggleButton.innerHTML =
                         '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
+                    toggleButton.style.width = "60px !important";
+                    toggleButton.style.height = "60px !important";
                 }
                 else {
                     iframe.style.display = "none";
                     tooltip.style.display = "block";
                     toggleButton.innerHTML =
                         '<img src="{{botIcon}}" style="width: 30px; height: 30px;" />';
-                    toggleButton.style.width = "60px";
-                    toggleButton.style.height = "60px";
+                    toggleButton.style.width = "60px !important";
+                    toggleButton.style.height = "60px !important";
                 }
             }
             window.addEventListener("message", handleMessage, false);
