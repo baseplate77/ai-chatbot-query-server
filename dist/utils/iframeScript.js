@@ -49,6 +49,7 @@
                 iframe.style.left = window.innerWidth < 640 ? "0" : "16px";
             iframe.style.width = window.innerWidth < 640 ? "100%" : "468px";
             iframe.style.height = window.innerWidth < 640 ? "100%" : "85vh";
+            iframe.style.maxHeight = "824px";
             iframe.style.borderRadius = window.innerWidth < 640 ? "0" : "0.75rem";
             iframe.style.boxShadow =
                 "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
@@ -61,7 +62,7 @@
                 '<img src={{ botIcon }} style="width: 30px; height: 30px;" />';
             toggleButton.style.padding = "0";
             toggleButton.style.backgroundColor = "{{ primaryColor }}";
-            toggleButton.style.borderRadius = "9999px";
+            toggleButton.style.borderRadius = "100%";
             toggleButton.style.display = "flex";
             toggleButton.style.justifyContent = "center";
             toggleButton.style.alignItems = "center";
