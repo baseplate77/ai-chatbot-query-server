@@ -103,7 +103,7 @@
             });
             function handleIframeOpenClose() {
                 if (iframe.style.display === "none") {
-                    iframe.contentWindow.postMessage({ openChat: true }, "*");
+                    iframe.contentWindow.postMessage({ openChat: true, fromPage: window.location.href }, "*");
                     iframe.style.display = "block";
                     tooltip.style.display = "none";
                     toggleButton.innerHTML =
@@ -115,7 +115,7 @@
                     }
                 }
                 else {
-                    iframe.contentWindow.postMessage({ closeChat: true }, "*");
+                    iframe.contentWindow.postMessage({ closeChat: true, fromPage: window.location.href }, "*");
                     iframe.style.display = "none";
                     tooltip.style.display = isHumanMessageOpen ? "none" : "block";
                     toggleButton.innerHTML = `<img src="{{botIcon}}" style="width: 30px; height: 30px;  " />`;
@@ -123,6 +123,9 @@
                     toggleButton.style.height = "60px";
                 }
             }
+            iframe.contentWindow.postMessage({
+                fromPage: window.location.href,
+            }, "*");
             function removeHumanMessage() {
                 isHumanMessageOpen = false;
                 document.body.removeChild(humanDiv);
