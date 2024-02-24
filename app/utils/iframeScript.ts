@@ -65,8 +65,7 @@
       toggleButton.setAttribute("id", "webbotify-chat-icon");
       toggleButton.style.overflow = "hidden";
 
-      toggleButton.innerHTML =
-        '<img src={{ botIcon }} style="width: 30px; height: 30px;" />';
+      toggleButton.innerHTML = '<img src={{ botIcon }} style="width: 30px;" />';
       toggleButton.style.padding = "0";
       toggleButton.style.backgroundColor = "{{ primaryColor }}";
       toggleButton.style.borderRadius = "100%";
@@ -125,7 +124,7 @@
           iframe.style.display = "block";
           tooltip.style.display = "none";
           toggleButton.innerHTML =
-            '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
+            '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height:30px;  filter: {{ brightness }}" />';
           toggleButton.style.width = "60px";
           toggleButton.style.height = "60px";
           if (isHumanMessageOpen) {
@@ -138,7 +137,7 @@
           );
           iframe.style.display = "none";
           tooltip.style.display = isHumanMessageOpen ? "none" : "block";
-          toggleButton.innerHTML = `<img src="{{botIcon}}" style="width: 30px; height: 30px;  " />`;
+          toggleButton.innerHTML = `<img src="{{botIcon}}" style="width: 30px;  " />`;
           toggleButton.style.width = "60px";
           toggleButton.style.height = "60px";
         }
@@ -211,7 +210,7 @@
           iframe.style.display = "block";
           tooltip.style.display = "none";
           toggleButton.innerHTML =
-            '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height: 30px; filter: {{ brightness }}" />';
+            '<img src="https://firebasestorage.googleapis.com/v0/b/ai-chatbot-f2048.appspot.com/o/x.svg?alt=media&token=7695194f-d6e5-4577-a5df-e0466a3c0071" style="width: 30px; height:30px;  filter: {{ brightness }}" />';
           toggleButton.style.width = "60px";
           toggleButton.style.height = "60px";
         } else {
