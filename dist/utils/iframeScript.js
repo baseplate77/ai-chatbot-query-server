@@ -227,7 +227,7 @@
   }
   .webbotiy-tooltip-wrapper .p-4 {
     padding: 16px;
-    padding-top:24px;
+    padding-top:20px;
     padding-right:20px;
   }
   .webbotiy-tooltip-wrapper .text-base {
@@ -288,8 +288,8 @@
     position: absolute;
     width: 14px;
     height: 14px;
-    top: 8px;
-    right: 8px;
+    top: 5px;
+    right: 5px;
     color: white;
   }
   .text-black {
