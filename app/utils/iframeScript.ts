@@ -270,6 +270,8 @@
   }
   .webbotiy-tooltip-wrapper .p-4 {
     padding: 16px;
+    padding-top:24px;
+    padding-right:20px;
   }
   .webbotiy-tooltip-wrapper .text-base {
     font-size: 16px;
@@ -327,10 +329,10 @@
   .webbotiy-tooltip-wrapper #${closeBtnId} {z
     cursor: pointer;
     position: absolute;
-    width: 16px;
-    height: 16px;
-    top: 4px;
-    right: 4px;
+    width: 14px;
+    height: 14px;
+    top: 8px;
+    right: 8px;
     color: white;
   }
   .text-black {
@@ -339,7 +341,7 @@
   </style>
   <div id="webbotify-message" class="relative max-w-sm bg-brand shadow-xl ring-gray-100 ring-1 rounded-xl">
   <div id=${closeBtnId}>               
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="#000" viewBox="0 0 256 256">
+    <svg  xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="#7d7d7d" viewBox="0 0 256 256">
       <path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z">
       </path>
     </svg>
