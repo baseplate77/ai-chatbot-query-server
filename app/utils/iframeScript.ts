@@ -3,7 +3,7 @@
     let s = "{{showToolTip}}";
     let botPosition = `{{ botPosition }}`;
     let pageTitle = document.title;
-
+    let chatbotId = "{{ chatbotId }}";
     let humanDiv = document.createElement("div");
     const toogleBtnParent = document.createElement("div");
 
@@ -41,6 +41,8 @@
 
     setTimeout(function () {
       iframe.setAttribute("id", "webbotify-chatbot-id");
+      if (chatbotId === "11031177170216183915666")
+        iframe.allow = "microphone *";
       iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
       // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
       iframe.style.position = "fixed";

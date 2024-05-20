@@ -4,6 +4,7 @@
         let s = "{{showToolTip}}";
         let botPosition = `{{ botPosition }}`;
         let pageTitle = document.title;
+        let chatbotId = "{{ chatbotId }}";
         let humanDiv = document.createElement("div");
         const toogleBtnParent = document.createElement("div");
         let isHumanMessageOpen = false;
@@ -35,6 +36,8 @@
             "position:absolute !important;color:white;font-weight:bold; background-color: #ee334b; border-radius:100% !important; font-size: 12px; height:22px !important; width:22px !important; bottom: -6px !important; right:-4px !important; text-align:center !important; letter-spacing:0 !important; line-height:21px !important; border: 1px solid white;";
         setTimeout(function () {
             iframe.setAttribute("id", "webbotify-chatbot-id");
+            if (chatbotId === "11031177170216183915666")
+                iframe.allow = "microphone *";
             iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
             // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
             iframe.style.position = "fixed";
