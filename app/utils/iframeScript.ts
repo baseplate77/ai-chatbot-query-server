@@ -41,7 +41,7 @@
 
     setTimeout(function () {
       iframe.setAttribute("id", "webbotify-chatbot-id");
-      if (chatbotId === "11031177170216183915666")
+      if (chatbotId === "23113673247159177249173214187")
         iframe.allow = "microphone *";
       iframe.src = "https://www.webbotify.com/chats/{{ chatbotId }}";
       // iframe.src = "http://localhost:3000/chats/{{ chatbotId }}";
