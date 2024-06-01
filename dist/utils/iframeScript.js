@@ -27,6 +27,7 @@
         toogleBtnParent.style.zIndex = "9999998";
         toggleButton.style.cursor = "pointer";
         toggleButton.style.border = "none";
+        toggleButton.style.margin = "0";
         const toogleButtonBorder = document.createElement("span");
         toogleButtonBorder.style.cssText =
             "position:absolute !important; border:3px solid #ee334b !important; border-radius:100% !important; top:-4px !important; bottom: -4px !important; right: -4px !important; left: -4px !important; ";
